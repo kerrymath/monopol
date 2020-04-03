@@ -1,17 +1,18 @@
 import React from "react";
 import boardProperties from "../../constants/BoardProperties"
-import Go from "../../images/corners/jail.jpg"
 import './Board.css'
 
-const Property = ({property, colour})=> {
-  const {title, price, position} = property;
-
+const Property = ({property, colour, type})=> {
+  const {title, price, position, image} = property;
+  const displayColour = type === "property"? true : false;
+  // const displayImg = image == "utility"? true : false;
 
   return (
     <div className="Board-prop property" style={position}>
-      <div className={`colour ${colour}`}/>
+      {displayColour && <div className={`colour ${colour}`}/>}
       <div className="content">
         <p className="title">{title}</p>
+        {image && <img className="property-img" src={image}/>}
         <p className="price">{price}</p>
       </div>
     </div>
@@ -41,9 +42,9 @@ const Board = ()=> {
               return <Corner property={item}/>
             })
           }
-          if(prop.type == 'property') {
+          else {
             return prop.properties.map(item=> {
-              return <Property property={item} colour={prop.colour}/>
+              return <Property property={item} colour={prop.colour} type={prop.type}/>
             })
           }
         })

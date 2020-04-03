@@ -29,6 +29,27 @@
 .c1 {
   background-color: blue;
 }
+.c2 {
+  background-color: brown;
+}
+.c3 {
+  background-color: pink;
+}
+.c4 {
+  background-color: orange;
+}
+.c5 {
+  background-color: red;
+}
+.c6 {
+  background-color: yellow;
+}
+.c7 {
+  background-color: green;
+}
+.c8 {
+  background-color: purple;
+}
 
 .property .content {
   padding: 5px 10px;
@@ -43,4 +64,8 @@
 
 .corner-img {
   width: 160px;
+}
+
+.property-img {
+  width: 100px;
 }
