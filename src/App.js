@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import socketIOClient from "socket.io-client";
-import logo from './logo.svg';
+import Board from "./components/Board/Board"
 import './App.css';
+
 
 
 function App() {
@@ -18,13 +19,11 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p onClick={()=> emit()}>
-          Socket <code>{socData}</code> 
-        </p>
-      
-      </header>
+     <Board />
+
+      <p onClick={()=> emit()}>
+        Socket <code>{socData}</code> 
+      </p>
     </div>
   );
 }

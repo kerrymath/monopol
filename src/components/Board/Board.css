@@ -1,0 +1,46 @@
+.BoardContainer {
+  width: 1480px;
+  height: 1480px;
+  background-color: lightgrey;
+  position: relative;
+  left: 50px;
+}
+
+.Board-prop {
+  position: absolute;
+  border: 1px solid black;
+  height: 200px;
+  background-color: white;
+}
+
+.property {
+  width: 120px
+}
+
+.corner {
+  width: 200px
+}
+
+.colour {
+  width: 100%;
+  height: 30px;
+}
+
+.c1 {
+  background-color: blue;
+}
+
+.property .content {
+  padding: 5px 10px;
+}
+
+.corner .content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.corner-img {
+  width: 160px;
+}
