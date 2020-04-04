@@ -1,0 +1,42 @@
+.playersPanel-container {
+  display: flex;
+  position: fixed;
+  max-width: 300px;
+  height: 100%;
+  z-index: 10;
+  background-color: #a8c3cc;
+}
+
+.display-players {
+  font-size: 25px;
+  padding: 10px;
+  cursor: pointer;
+  background-color: #e5eef1;
+  display: flex;
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  padding: 20px;
+  background-color: #a1e6fd;
+}
+
+li:nth-child(odd) {
+  background-color: #1ba1ce;
+}
+
+.players-heading {
+  text-align: left;
+  margin: 0;
+  padding: 20px 0;
+  background-color: #2b464e;
+  color: white;
+  padding-left: 20px;
+}

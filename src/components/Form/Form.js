@@ -21,8 +21,11 @@ export const JoinForm = ({returnValues}) => {
 
     if(!name || !firstInital || !lastInital) setErrorMsg('You missed a couple field(s) 😅. Please fill them out.')
     else {
-      setErrorMsg('')
       returnValues({name, firstInital, lastInital})
+      setErrorMsg('')
+      setName('')
+      setFirstInital('')
+      setLastInital('')
     }
   };
 
