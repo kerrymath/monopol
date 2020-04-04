@@ -39,7 +39,6 @@ export const JoinForm = ({returnValues}) => {
             value={name}
             onChange={(e) => handleChange(e)}
             maxLength="30"
-            require={true}
           />
         </label>
         <label>
@@ -52,7 +51,6 @@ export const JoinForm = ({returnValues}) => {
               value={firstInital}
               onChange={(e) => handleChange(e)}
               maxLength="1"
-              require={true}
             />
             <input
               name="lastInital"
@@ -61,7 +59,6 @@ export const JoinForm = ({returnValues}) => {
               value={lastInital}
               onChange={(e) => handleChange(e)}
               maxLength="1"
-              require={true}
             />
           </div>
         </label>
