@@ -14,18 +14,37 @@ io.on('connection', function (socket) {
 
   // io.emit('game update', players);
 
-  socket.on('new player', function(player){
+  socket.on('player', function(player){
     console.log('player',player)
-    // save to game update
-    allplayers = Object.assign(players, {[player.id]: player})
-    players = allplayers
-    console.log('players',players)
+
+    // player exist do nothing
+    if (player && player.id in players) {}
+    else {
+    // save new player to players array
+      player.status = "online"
+      players = Object.assign(players, {[player.id]: player})
+    }
+
+    console.log('update players',players)
     // emit to game update
-    io.emit('game update', players);
+    io.emit('game update', {players});
   });
 
+  socket.on('offline', function(state){
+    const dPlayer = state.player
+    
+    if(dPlayer) {
+      dPlayer.status = "offline"
+      players[dPlayer.id] = dPlayer
+      
+      // emit to game update
+      io.emit('game update', {players});
+      console.log(`${dPlayer.name} disconnected`);
+    }
+  })
+
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+    console.log(`user disconnected`);
   });
 })
 

@@ -7,6 +7,10 @@
   background-color: #a8c3cc;
 }
 
+.playersPanel {
+  padding-bottom: 60px;
+}
+
 .display-players {
   font-size: 25px;
   padding: 10px;
@@ -20,6 +24,8 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  overflow: scroll;
+  height: 100%;
 }
 
 li {

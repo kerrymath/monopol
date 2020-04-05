@@ -1,12 +1,30 @@
 import React, { useState } from "react";
+import uniqid from 'uniqid';
+import store from 'store2';
+import socket from "../../service/Socket/Socket"
 import './form.css'
 
-export const JoinForm = ({returnValues}) => {
+const defaultPlayer = {
+  id: '',
+  gameId: '',
+  name: '',
+  icon: '',
+  status: '',
+  initials: {},
+  money: 1000,
+  properties: [],
+  playerOffset: {},
+  playerPosition: {},
+  isInJail: false,
+}
+
+export const JoinForm = ({returnPlayer}) => {
   const [name, setName] = useState("");
   const [firstInital, setFirstInital] = useState("");
   const [lastInital, setLastInital] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
+  
   const handleChange = (e) => {
     const target = e.target;
 
@@ -21,11 +39,35 @@ export const JoinForm = ({returnValues}) => {
 
     if(!name || !firstInital || !lastInital) setErrorMsg('You missed a couple field(s) 😅. Please fill them out.')
     else {
-      returnValues({name, firstInital, lastInital})
+      // create player
+      const player = defaultPlayer;
+
+      // random id
+      const id = uniqid();
+
+      // set offset
+      // set position
+
+      player.id = id
+      player.name = name
+      player.initials = {firstInital, lastInital}
+
+      returnPlayer(player)
+      console.log('player', player)
+
+      // save player to local storage
+      store('mono-player', player)
+
+      //emit players array
+      socket.emit('player', player);
+
+      // reset form values
       setErrorMsg('')
       setName('')
       setFirstInital('')
       setLastInital('')
+
+
     }
   };
 
