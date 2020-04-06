@@ -4,17 +4,16 @@ import socket from "./service/Socket/Socket"
 import Board from "./components/Board/Board"
 import {JoinForm} from "./components/Form/Form"
 import PlayersPanel from "./components/PlayersPanel/PlayersPanel"
+import Player from "./components/Player/Player"
 import './App.css';
 
 const App = ()=> {
-  const [socData, setSocData] = useState('hoya init')
   const [games, setGames] = useState([])
   const [players, setPlayers] = useState({}) // on init needs to be empty obj
   const [player, setPlayer] = useState(null)
 
   useEffect(() => {    
     getSavedPlayer()
-    console.log('player', player)
 
     socket.on('game update', function(state){
       console.log('state',state.players)
@@ -30,22 +29,30 @@ const App = ()=> {
     const savedPlayer = store('mono-player')
 
     if (!player && savedPlayer) {
-      console.log('savedPlayer', savedPlayer)
-
       setPlayer(savedPlayer)
       socket.emit('player', savedPlayer);
     }
   }
+
+  const playersKey = Object.keys(players)
 
   return (
     <div className="App">
      {!player && 
       <JoinForm 
         returnPlayer={setPlayer}
-
       />} 
      <PlayersPanel players={players}/>
-     <Board />
+     <div className="activeBoard">
+       {players && 
+          playersKey.map((key)=>{
+            const player = players[key]
+            
+            return <Player player={player}/>
+          })
+        }
+       <Board />
+     </div>
     </div>
   );
 }

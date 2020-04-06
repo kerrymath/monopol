@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import './playersPanel.css'
 
 export const PlayersPanel = ({players}) => {
   const [displayPlayersPanel, setDisplayPlayersPanel] = useState(true)
   const displayIcon = displayPlayersPanel ? "<" : ">"
   const playersKeys = Object.keys(players)
-  
-  useEffect(() => {
-    console.log('pp-players',players)
-    console.log('pp-playersKeys',playersKeys)
-  })
 
   return (
     <div className="playersPanel-container">

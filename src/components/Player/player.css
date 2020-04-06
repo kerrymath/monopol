@@ -1,0 +1,13 @@
+.Player-container {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  z-index: 20;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 34px;
+  transform: scale(0.8);
+  transition: left 2s, top 2s;
+}
