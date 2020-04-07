@@ -3,12 +3,12 @@ import boardProperties from "../../constants/BoardProperties"
 import './Board.css'
 
 const Property = ({property, colour, type})=> {
-  const {title, price, position, image} = property;
+  const {id, title, price, position, image} = property;
   const displayColour = type === "property"? true : false;
   // const displayImg = image == "utility"? true : false;
 
   return (
-    <div className="Board-prop property" style={position}>
+    <div className="Board-prop property" style={position} data-id={id}>
       {displayColour && <div className={`colour ${colour}`}/>}
       <div className="content">
         <p className="title">{title}</p>
@@ -20,10 +20,10 @@ const Property = ({property, colour, type})=> {
 }
 
 const Corner = ({property})=> {
-  const {position, title, image} = property;
+  const {id, position, title, image} = property;
 
   return (
-    <div className="Board-prop corner" style={position}>
+    <div className="Board-prop corner" style={position} data-id={id}>
       <div className="content">
         {/* <p className="title">{title}</p> */}
         <img className="corner-img" src={image}/>

@@ -8,6 +8,7 @@ import './form.css'
 const defaultPlayer = {
   id: '',
   gameId: '',
+  boardId: 'b1',
   name: '',
   icon: '',
   status: '',

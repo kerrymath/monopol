@@ -27,3 +27,50 @@
 .cpRollDice img {
   width: 80px;
 }
+
+.DiceRoll {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: #b8c5d2b5;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.dice {
+  width: 200px;
+  height: 200px;
+  margin: 2% auto;
+  background: url(../../images/other/dice_sprite.png);
+  background-repeat: no-repeat;
+}
+.ani {
+  animation: play .6s steps(6) infinite;
+}
+.d1 {
+  background-position: -35px -37px;
+}
+.d2 {
+  background-position: -335px -37px;
+}
+.d3 {
+  background-position: -645px -37px;
+}
+.d4 {
+  background-position: -35px -325px
+}
+.d5 {
+  background-position: -335px -325px;
+}
+.d6 {
+  background-position: -645px -325px;
+}
+
+@keyframes play {
+  20% { background-position: -35px -325px; }
+  40% { background-position: -335px -37px; }
+  60% { background-position: -335px -325px; }
+  80% { background-position: -645px -37px; }
+  100% { background-position: -645px -325px; }
+}

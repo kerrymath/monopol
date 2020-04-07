@@ -8,10 +8,15 @@ import Player from "./components/Player/Player"
 import ControlPanel from "./components/ControlPanel/ControlPanel"
 import './App.css';
 
+const initialDiceState = {
+  numberOfConsecutiveDoubles: 0,
+}
+
 const App = ()=> {
   const [games, setGames] = useState([])
   const [players, setPlayers] = useState({}) // on init needs to be empty obj
   const [player, setPlayer] = useState(null)
+  const [diceState, setDiceState] = useState(initialDiceState)  
 
   useEffect(() => {    
     getSavedPlayer()
@@ -35,6 +40,24 @@ const App = ()=> {
     }
   }
 
+  const handleDiceClick = (d1,d2)=> {
+    const isDouble = d1 == d2 ? true : false
+    console.log('click', d1,d2, isDouble)
+
+      // if it's not doubles
+      if (!isDouble) {
+        // update dice numbers
+        setDiceState(diceState)
+        // update player position
+        // update player state
+        // emit to player to server
+        // update and emit status
+      }
+      else {
+        setDiceState(diceState)
+      }
+  }
+
   const playersKey = Object.keys(players)
 
   return (
@@ -44,7 +67,11 @@ const App = ()=> {
         returnPlayer={setPlayer}
       />} 
       <PlayersPanel players={players}/>
-      <ControlPanel  player={player}/>
+      <ControlPanel  
+        player={player} 
+        diceState={diceState}
+        handleDiceClick={handleDiceClick}
+        />
       <div className="activeBoard">
         {players && 
             playersKey.map((key)=>{
