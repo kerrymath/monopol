@@ -5,6 +5,7 @@ import Board from "./components/Board/Board"
 import {JoinForm} from "./components/Form/Form"
 import PlayersPanel from "./components/PlayersPanel/PlayersPanel"
 import Player from "./components/Player/Player"
+import ControlPanel from "./components/ControlPanel/ControlPanel"
 import './App.css';
 
 const App = ()=> {
@@ -42,17 +43,18 @@ const App = ()=> {
       <JoinForm 
         returnPlayer={setPlayer}
       />} 
-     <PlayersPanel players={players}/>
-     <div className="activeBoard">
-       {players && 
-          playersKey.map((key)=>{
-            const player = players[key]
-            
-            return <Player player={player}/>
-          })
-        }
-       <Board />
-     </div>
+      <PlayersPanel players={players}/>
+      <ControlPanel  player={player}/>
+      <div className="activeBoard">
+        {players && 
+            playersKey.map((key)=>{
+              const player = players[key]
+              
+              return <Player player={player}/>
+            })
+          }
+        <Board />
+      </div>
     </div>
   );
 }

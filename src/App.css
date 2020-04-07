@@ -5,6 +5,9 @@
 .activeBoard {
   left: 300px;
   position: absolute;
+  margin-bottom: 150px;
+  transition: 2s;
+  transform: scale(0.7);
 }
 
 @media (prefers-reduced-motion: no-preference) {
