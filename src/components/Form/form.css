@@ -7,7 +7,7 @@
   background-color: #778899a8;
 }
 
-form {
+.container {
   display: flex;
   flex-direction: column;
   width: 50vw;
@@ -42,4 +42,16 @@ button {
 
 .errorMsg {
   color: red;
+}
+
+.gameId {
+  background-color: #e8b4b4;
+  width: max-content;
+  padding: 10px;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+input[name=gameId] {
+  width: 20%;
 }
