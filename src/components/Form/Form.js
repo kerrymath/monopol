@@ -27,7 +27,7 @@ const defaultGameState = {
   whosTurn: '',
   completedTurns: 0,
   board: null,
-  status: 'init',
+  status: 'Yet to begin',
   hostId: '',
 }
 

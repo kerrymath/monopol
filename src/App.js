@@ -6,6 +6,7 @@ import {JoinForm} from "./components/Form/Form"
 import PlayersPanel from "./components/PlayersPanel/PlayersPanel"
 import Player from "./components/Player/Player"
 import ControlPanel from "./components/ControlPanel/ControlPanel"
+import notify from './utils/notify';
 import './App.css';
 
 const initialDiceState = {
@@ -27,12 +28,14 @@ const App = ()=> {
       console.log('states',states)
       setPlayers(states.players)
       setGames(states.allGames)
+      notify(states.message)
     });
-
+    
     socket.on('join game status', function (obj) {
       const storePlayer = store('mono-player')
       if (storePlayer && storePlayer.id == obj.id && obj.status == false) {
         // display message
+        notify(obj.message)
         store.remove('mono-player')
         setPlayer(null)
       }
@@ -41,12 +44,10 @@ const App = ()=> {
     socket.on('notification', function (note) {
       if (player && player.id == note.recipient || note.recipient == 'all') {
         // display message
+        notify(note.message, 5000)
       }
     })
     
-    // return(
-    //   socket.emit('offline', {player, players})
-    // )
   },[])
 
   const getSavedPlayer = ()=> {
@@ -101,18 +102,27 @@ const App = ()=> {
 
   const playersKeyInMyGame = Object.keys(getPlayersInMyGame())
 
+  const getMyGameState = ()=> {
+    if (player && games.hasOwnProperty(player.gameId)) {
+      return games[player.gameId]
+    }
+  }
 
   return (
     <div className="App">
+      <div className="notificationContainer">
+    </div>
+
      {!player && 
       <JoinForm 
         returnStates={handleStatesFromLogin}
       />} 
-      <PlayersPanel players={getPlayersInMyGame()}/>
+      <PlayersPanel players={getPlayersInMyGame()} gameState={getMyGameState()}/>
       <ControlPanel  
         player={player} 
         diceState={diceState}
         handleDiceClick={handleDiceClick}
+        gameState={getMyGameState()}
         />
       <div className="activeBoard">
         {players && 

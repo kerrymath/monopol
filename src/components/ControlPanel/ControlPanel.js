@@ -28,7 +28,7 @@ const DiceRoll = ({diceNumbers, close})=> {
   )
 }
 
-export const ControlPanel = ({player, handleDiceClick}) => {
+export const ControlPanel = ({player, handleDiceClick, gameState}) => {
   const [displayDiceRoll, setDisplayDiceRoll] = useState(false)
   const [diceNumbers, setDiceNumbers] = useState([])
 
@@ -45,8 +45,14 @@ export const ControlPanel = ({player, handleDiceClick}) => {
     <div>
       <div className="ControlPanel-container">
         <div className="cpStatus">
-          <p>Status: ...</p>
+          {gameState &&
+            <>
+              <p>Game code: {gameState.gameId}</p>
+              <p>Game: {gameState.status}</p>
+            </>
+          }
         </div>
+        <div className="cpProperties"><p>Properties</p></div>
         <div className="cpSavedCards"><p>Saved Cards</p></div>
         <div className="cpMoney">
           <p>Money</p>

@@ -10,6 +10,19 @@
   transform: scale(0.7);
 }
 
+.notificationContainer {
+  display: block;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 110;
+}
+
+.notificationContainer .notify{
+  padding: 5px;
+  background-color: #faebd79c;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

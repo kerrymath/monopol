@@ -34,12 +34,14 @@ io.on('connection', function (socket) {
       if (player && player.id in players) { 
         // emit to game update
         io.emit('game update', allStates);
+        io.emit('notification', {recipient: 'all', message: `${player.name} has joined your game.`})
       }
       else {
       // save new player to players array
         players = Object.assign(players, {[player.id]: player})
         // emit to game update
         io.emit('game update', allStates);
+        io.emit('notification', {recipient: 'all', message: `${player.name} has joined your game.`})
       }
     }
     else {

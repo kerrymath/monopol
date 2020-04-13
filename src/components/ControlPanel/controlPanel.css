@@ -10,12 +10,12 @@
 }
 
 .cpStatus {
-  flex: 40%;
+  flex: 20%;
   text-align: left;
   padding: 0 10px;
   border: 1px solid white;
 }
-.cpSavedCards, .cpMoney, .cpRollDice {
+.cpSavedCards, .cpProperties, .cpMoney, .cpRollDice {
   flex: 20%;
   border: 1px solid white;
   cursor: pointer;
