@@ -68,3 +68,9 @@
 .property-img {
   width: 100px;
 }
+
+.middle img {
+  transform: rotate(270deg);
+  position: relative;
+  top: 66px;
+}

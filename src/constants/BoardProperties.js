@@ -15,6 +15,23 @@ import taxImg from '../images/utils/tax.png'
 
 const BoardProperties = [
   {
+    type: 'middleCard',
+    properties: [
+      {
+        id: 'chance',
+        image: chanceImg,
+        position: {top: '830px', left: '878px', height: '300px',
+        width: '200px', transform: 'rotate(45deg)'}
+      },
+      {
+        id: 'community',
+        image: communityImg,
+        position: {top: '310px', left: '353px', height: '300px',
+        width: '200px', transform: 'rotate(45deg)'}
+      }
+    ]
+  },
+  {
     type: 'corner',
     properties: [
       {

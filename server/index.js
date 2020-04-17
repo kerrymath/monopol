@@ -46,7 +46,7 @@ io.on('connection', function (socket) {
     }
     else {
       // game don't exist && send notification
-      io.emit('join game status', {id: player.id, status: false, message:  `Sorry this game doesn't exist`})
+      io.emit('join game status', {id: player.id, status: false, message:  `Sorry this game doesn't exist anymore.`})
     }
 
     console.log('update players',players)
@@ -59,6 +59,24 @@ io.on('connection', function (socket) {
       allGames[gameState.gameId] = gameState
       io.emit('game update', allStates);
     }
+  });
+
+  socket.on('update player', function(state){
+    const {player, notification} = state
+    // check to see if player exists
+    if (players.hasOwnProperty(player.id)) {
+      players[player.id] = player
+
+      io.emit('game update', allStates);
+      io.emit('notification', {recipient: 'all', message: notification})
+    }
+    else {
+      io.emit('notification', {recipient: [player.id], message: "Sorry there was an error with this request."})
+    }
+  });
+
+  socket.on('notify everyone', function(notification){
+      io.emit('notification', {recipient: 'all', message: notification})
   });
 
   socket.on('offline', function(state){

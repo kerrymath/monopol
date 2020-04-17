@@ -7,10 +7,35 @@ import PlayersPanel from "./components/PlayersPanel/PlayersPanel"
 import Player from "./components/Player/Player"
 import ControlPanel from "./components/ControlPanel/ControlPanel"
 import notify from './utils/notify';
+import MiddleCards from './constants/Cards';
 import './App.css';
 
 const initialDiceState = {
   numberOfConsecutiveDoubles: 0,
+}
+
+const MiddleCard = ({setDisplayCard, middleCardContent, handleUserAction})=> {
+  const {title, type, item, from} = middleCardContent
+  const render =()=> {
+    // handle chance & community card types
+    switch (type) {
+      case 'receive':
+        const action = {type: 'receive', item, from}
+        return (<button onClick={()=>{handleUserAction(action); setDisplayCard(false)}}>Collect your money!</button>)
+        
+        default:
+          return (<button onClick={()=>{setDisplayCard(false)}}>Close</button>)
+    }
+  }
+
+  return (
+    <div className="formContainer">
+      <div className="container">
+        <p>{title}</p>
+        {render()}
+      </div>
+    </div>
+  )
 }
 
 const App = ()=> {
@@ -18,6 +43,9 @@ const App = ()=> {
   const [players, setPlayers] = useState({}) // on init needs to be empty obj
   const [player, setPlayer] = useState(null)
   const [diceState, setDiceState] = useState(initialDiceState)
+  const [displayCard, setDisplayCard] = useState(false)
+  const [middleCardContent, setMiddleCardContent] = useState(null)
+
 
   const playersKey = Object.keys(players)
 
@@ -108,10 +136,47 @@ const App = ()=> {
     }
   }
 
+  const handleCardClick = (deck)=> {
+    // handle all card clicks - middle, utilise, props, corners
+    switch (deck.type) {
+      case 'middle':
+        const cards = deck.id == "chance" ? MiddleCards.chance : MiddleCards.community;
+        //get random card
+        const card = cards[3]
+        setMiddleCardContent(card)
+        setDisplayCard(true)
+        socket.emit('notify everyone', `${player.name} drew this ${deck.id} card: ${card.title}`);
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+  const handleUserAction = (action)=> {
+    // handle all actions that will affect game play
+    switch (action.type) {
+      case "receive":
+        const notification = `${player.name} has collected £${action.item}`
+        // get monies from bank or person
+        player.money += action.item
+        setPlayer(player)
+        // post to server
+        socket.emit('update player', {player, notification});
+        // send update state && status
+        break;
+    
+      default:
+        break;
+    }
+  }
+
   return (
     <div className="App">
-      <div className="notificationContainer">
-    </div>
+      <div className="notificationContainer"/>
+      {displayCard && 
+        <MiddleCard setDisplayCard={setDisplayCard} middleCardContent={middleCardContent} handleUserAction={handleUserAction} />
+      }
 
      {!player && 
       <JoinForm 
@@ -131,7 +196,7 @@ const App = ()=> {
             return <Player player={p}/>
             })
           }
-        <Board />
+        <Board handleCardClick={handleCardClick}/>
       </div>
     </div>
   );

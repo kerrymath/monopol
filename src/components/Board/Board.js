@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import boardProperties from "../../constants/BoardProperties"
 import './Board.css'
 
@@ -32,19 +32,38 @@ const Corner = ({property})=> {
   )
 }
 
-const Board = ()=> {
+const MiddleCards = ({property, handleCardClick})=> {
+  const {id, position, image} = property;
+  const card = {type: 'middle', id}
+
+  return (
+    <div className="Board-prop middle" style={position} data-id={id} onClick={()=>handleCardClick(card)}>
+      <div className="content">
+        <img className="corner-img" src={image}/>
+      </div>
+    </div>
+  )
+}
+
+const Board = ({handleCardClick})=> {
+  
   return (
     <div className="BoardContainer">
       {
         boardProperties.map(prop => {
-          if(prop.type == 'corner') {
+          if(prop.type == 'middleCard') {
             return prop.properties.map(item=> {
-              return <Corner property={item}/>
+              return <MiddleCards handleCardClick={handleCardClick} property={item}/>
+            })
+          }
+          else if(prop.type == 'corner') {
+            return prop.properties.map(item=> {
+              return <Corner handleCardClick={handleCardClick} property={item}/>
             })
           }
           else {
             return prop.properties.map(item=> {
-              return <Property property={item} colour={prop.colour} type={prop.type}/>
+              return <Property handleCardClick={handleCardClick} property={item} colour={prop.colour} type={prop.type}/>
             })
           }
         })
