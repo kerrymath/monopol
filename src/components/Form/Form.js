@@ -20,6 +20,7 @@ const defaultPlayer = {
   playerPosition: {top: '1278px', left: '1278px'},
   isInJail: false,
   isHost: false,
+  isInGame: true,
 }
 
 const defaultGameState = {

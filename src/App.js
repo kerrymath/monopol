@@ -15,13 +15,17 @@ const initialDiceState = {
 }
 
 const MiddleCard = ({setDisplayCard, middleCardContent, handleUserAction})=> {
-  const {title, type, item, from} = middleCardContent
+  const {title, type, item, from, to} = middleCardContent
   const render =()=> {
     // handle chance & community card types
+    let action;
     switch (type) {
       case 'receive':
-        const action = {type: 'receive', item, from}
+        action = {type: 'receive', item, from}
         return (<button onClick={()=>{handleUserAction(action); setDisplayCard(false)}}>Collect your money!</button>)
+      case 'pay':
+        action = {type: 'pay', item, to}
+        return (<button onClick={()=>{handleUserAction(action); setDisplayCard(false)}}>Pay!</button>)
         
         default:
           return (<button onClick={()=>{setDisplayCard(false)}}>Close</button>)
@@ -57,6 +61,11 @@ const App = ()=> {
       setPlayers(states.players)
       setGames(states.allGames)
       notify(states.message)
+      if (store('mono-player')) {
+        const tempPlayer = store('mono-player')
+        store.remove('mono-player')
+        store('mono-player', states.players[tempPlayer.id])
+      }
     });
     
     socket.on('join game status', function (obj) {
@@ -75,7 +84,6 @@ const App = ()=> {
         notify(note.message, 5000)
       }
     })
-    
   },[])
 
   const getSavedPlayer = ()=> {
@@ -142,7 +150,7 @@ const App = ()=> {
       case 'middle':
         const cards = deck.id == "chance" ? MiddleCards.chance : MiddleCards.community;
         //get random card
-        const card = cards[3]
+        const card = cards[1]
         setMiddleCardContent(card)
         setDisplayCard(true)
         socket.emit('notify everyone', `${player.name} drew this ${deck.id} card: ${card.title}`);
@@ -153,17 +161,97 @@ const App = ()=> {
     }
   }
 
+  const handleMoney = (personId, payOrCollect, fromOrTo, amount)=> {
+    const collector = players[personId]
+    let notification;
+
+    if (payOrCollect == "collect") {
+      if (fromOrTo == "bank" || fromOrTo == undefined) {
+        collector.money += amount
+        setPlayer(player)
+
+        notification = `${collector.name} has collected £${amount} from the bank.`
+         // post to server & notify players
+        socket.emit('update player', {collector, notification});
+      }
+      else if (fromOrTo == "everyone") {
+        let moneyForCollector = 0
+        // add fn if debtor goes bankrupt and can't pay in full
+        // they need to trade property
+
+        // map through players in the game and take money
+        playersKeyInMyGame.map(key => {
+          const debtor = getPlayersInMyGame()[key]
+          if (debtor.isInGame) {
+            debtor.money -= amount
+            debtor.isInGame = debtor.money < 0? false : true
+            players[debtor.id] = debtor
+            setPlayers(debtor)
+
+            moneyForCollector += amount
+          }
+        })
+        // get total players and * by amount
+        collector.money += moneyForCollector
+        players[collector.id] = collector
+        setPlayer(collector)
+        setPlayers(players)
+        
+        notification = `${collector.name} has collected £${amount} from everyone.`
+        // post to server & notify players
+        socket.emit('update players', {players, notification});
+      }
+      else {
+        // individual
+        const debtor = players[fromOrTo]
+        if (debtor.isInGame) {
+          // take money from them
+          debtor.money -= amount
+          debtor.isInGame = debtor.money < 0? false : true
+          players[debtor.id] = debtor
+          // add fn if debtor goes bankrupt and can't pay in full
+          // they need to trade property
+          //add money to collector
+          collector.money += amount
+          players[collector.id] = collector
+          // set players & notify
+          setPlayer(collector)
+          setPlayers(players)
+          notification = `${collector.name} has collected £${amount} from ${debtor.name}.`
+          socket.emit('update players', {players, notification});
+        }
+      }
+    }
+    else {
+      // payOrCollect == "pay"
+      if (fromOrTo == "bank" || fromOrTo == undefined) {
+        player.money -= amount
+        setPlayer(player)
+
+        notification = `${collector.name} has payed £${amount} to the bank.`
+         // post to server & notify players
+         socket.emit('update player', {player, notification});
+      }
+      else if (fromOrTo == "everyone") {
+        
+        notification = `${collector.name} has payed £${amount} to everyone.`
+      }
+      else {
+        // individual
+      }
+    }
+
+   
+  }
+
   const handleUserAction = (action)=> {
     // handle all actions that will affect game play
     switch (action.type) {
       case "receive":
-        const notification = `${player.name} has collected £${action.item}`
-        // get monies from bank or person
-        player.money += action.item
-        setPlayer(player)
-        // post to server
-        socket.emit('update player', {player, notification});
-        // send update state && status
+          handleMoney(player.id, 'collect', action.from, action.item)
+        break;
+      case "pay":
+          handleMoney(player.id, 'pay', action.to , action.item)
         break;
     
       default:
@@ -173,6 +261,7 @@ const App = ()=> {
 
   return (
     <div className="App">
+    <div onClick={()=>handleMoney(player.id, 'collect', 'k964w34w' , 50)}>give money to me from kerry 1</div>
       <div className="notificationContainer"/>
       {displayCard && 
         <MiddleCard setDisplayCard={setDisplayCard} middleCardContent={middleCardContent} handleUserAction={handleUserAction} />

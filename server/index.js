@@ -75,6 +75,21 @@ io.on('connection', function (socket) {
     }
   });
 
+  socket.on('update players', function(state){
+    const {notification} = state
+    const updatePlayers = state.players
+    const updatePlayersKeys = Object.keys(updatePlayers)
+
+    // map through playersKey
+    updatePlayersKeys.map(playerKey=>{
+      players[playerKey] = updatePlayers[playerKey]
+    })
+      // update each player in global
+      // emit to all
+      io.emit('game update', allStates);
+      io.emit('notification', {recipient: 'all', message: notification})
+  });
+
   socket.on('notify everyone', function(notification){
       io.emit('notification', {recipient: 'all', message: notification})
   });

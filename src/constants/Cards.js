@@ -3,7 +3,7 @@ export const community = [
 
   { title: `Bank error in your favor. Collect £200.`, type: 'receive', item:200},
 
-  { title: `Doctor's fees. {fee} Pay £50.`, type: 'pay', item:50},
+  { title: `Doctor's fees. Pay £50.`, type: 'pay', item:50},
 
   { title: `From sale of stock you get £50.`, type: 'receive', item: 50},
 
@@ -55,7 +55,7 @@ export const chance = [
 
   {title: `Pay  Speeding fine of £15.`, type: 'pay', item: 15},
 
-  {title: `You have been elected Chairman of the Board. Pay each player £50.`, type: 'pay', item: 50, from: 'everyone'},
+  {title: `You have been elected Chairman of the Board. Pay each player £50.`, type: 'pay', item: 50, to: 'everyone'},
 
   {title: `Your building loan matures. Receive £150.`, type: 'receive', item: 150},
 
